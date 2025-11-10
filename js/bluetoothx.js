@@ -228,28 +228,53 @@ export function saveTextFile(filename, text) {
     }
 }
 
-// Append this helper to your existing bluetoothx.js module.
-// Minimal WebAudio beep — no external file required.
+// Minimal audio init + beep helpers for Blazor interop.
+// Call `initAudio()` from a user gesture (button click) so browsers allow audio.
+// `beep()` then uses the unlocked/resumed AudioContext.
+
+export function initAudio() {
+    try {
+        if (window.__r10_audioctx) {
+            // already initialized
+            return;
+        }
+
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+
+        // Create and try to resume immediately (must be called from user gesture)
+        window.__r10_audioctx = new Ctx();
+        // Resume may be required on some browsers
+        window.__r10_audioctx.resume && window.__r10_audioctx.resume().catch(() => {});
+    } catch (e) {
+        console.warn('initAudio failed', e);
+    }
+}
 
 export function beep() {
     try {
         const Ctx = window.AudioContext || window.webkitAudioContext;
-        if (!Ctx) return;
-        const ctx = new Ctx();
+        // Prefer the previously created context so it's not blocked
+        const ctx = window.__r10_audioctx || (Ctx ? new Ctx() : null);
+        if (!ctx) return;
+
+        // If we created a context now (no user gesture), try to keep it for future
+        if (!window.__r10_audioctx) {
+            window.__r10_audioctx = ctx;
+        }
+
         const o = ctx.createOscillator();
         const g = ctx.createGain();
         o.type = 'sine';
-        o.frequency.value = 880; // frequency in Hz
+        o.frequency.value = 880; // Hz
         g.gain.value = 0.04; // volume
         o.connect(g);
         g.connect(ctx.destination);
+
+        // Start and stop quickly
         o.start();
-        // stop shortly
         setTimeout(() => {
-            try {
-                o.stop();
-                ctx.close();
-            } catch { /* ignore */ }
+            try { o.stop(); } catch { /* ignore */ }
         }, 120);
     } catch (e) {
         console.warn('beep failed', e);

@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "hrML8Nix",
+  "version": "HlK6/qxn",
   "assets": [
     {
       "hash": "sha256-3b9Drf/xRD5E6J9Pq+B7g3S6DK+VdIubnihlghJaG4o=",
@@ -62,7 +62,7 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.wasm"
     },
     {
-      "hash": "sha256-UcVPu+I/aqd9swTYVjvh81+0uUuqNzty6U/a7ONNWzw=",
+      "hash": "sha256-zq6nsd2WAvSrGCv+qtaUn4/7iAd9lDSakEDz5VIA7+g=",
       "url": "_framework/R10WAsm.wasm"
     },
     {
@@ -134,7 +134,7 @@ self.assetsManifest = {
       "url": "_framework/System.Text.RegularExpressions.wasm"
     },
     {
-      "hash": "sha256-NE/GGMynfri6Kz+xNKiT30MG8zy76km/hgFvC+P/aKw=",
+      "hash": "sha256-JLfkAYdgHyQrcvcIeWAmC/MUpioUdJUqzH2eJrN2Hek=",
       "url": "_framework/blazor.boot.json"
     },
     {
@@ -198,7 +198,7 @@ self.assetsManifest = {
       "url": "index.html"
     },
     {
-      "hash": "sha256-D9GFGfeT+3nhGtMHuFbPE1BkNzalU7+8RhRmFHcvHRw=",
+      "hash": "sha256-W2zuj2KO5Ke6EbVpo93T1RB1FY89Rhz/MVfLAFvX6dY=",
       "url": "js/bluetoothx.js"
     },
     {
