@@ -208,3 +208,50 @@ export async function disconnect() {
     controlPointCharacteristic = null;
     device = null;
 }
+
+// Add this exported helper to your existing module (append or merge with current exports).
+// It creates a text blob and triggers a download from the browser.
+export function saveTextFile(filename, text) {
+    try {
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    } catch (e) {
+        console.error('saveTextFile failed', e);
+        throw e;
+    }
+}
+
+// Append this helper to your existing bluetoothx.js module.
+// Minimal WebAudio beep — no external file required.
+
+export function beep() {
+    try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        const ctx = new Ctx();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine';
+        o.frequency.value = 880; // frequency in Hz
+        g.gain.value = 0.04; // volume
+        o.connect(g);
+        g.connect(ctx.destination);
+        o.start();
+        // stop shortly
+        setTimeout(() => {
+            try {
+                o.stop();
+                ctx.close();
+            } catch { /* ignore */ }
+        }, 120);
+    } catch (e) {
+        console.warn('beep failed', e);
+    }
+}
